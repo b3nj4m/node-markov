@@ -1,0 +1,166 @@
+<!doctype html>
+<!-- The Time Machine GitHub pages theme was designed and developed by Jon Rohan, on Feb 7, 2012. -->
+<!-- Follow him for fun. http://twitter.com/jonrohan. Tail his code on http://github.com/jonrohan -->
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <link rel="stylesheet" href="stylesheets/stylesheet.css" media="screen">
+  <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script type="text/javascript" src="javascripts/script.js"></script>
+
+  <title>Node-markov</title>
+  <meta name="description" content="Generate markov chains for chatbots in node">
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+</head>
+
+<body>
+
+  <div class="wrapper">
+    <header>
+      <h1 class="title">Node-markov</h1>
+    </header>
+    <div id="container">
+      <p class="tagline">Generate markov chains for chatbots in node</p>
+      <div id="main" role="main">
+        <div class="download-bar">
+        <div class="inner">
+          <a href="https://github.com/b3nj4m/node-markov/tarball/master" class="download-button tar"><span>Download</span></a>
+          <a href="https://github.com/b3nj4m/node-markov/zipball/master" class="download-button zip"><span>Download</span></a>
+          <a href="https://github.com/b3nj4m/node-markov" class="code">View Node-markov on GitHub</a>
+        </div>
+        <span class="blc"></span><span class="trc"></span>
+        </div>
+        <article class="markdown-body">
+          <h1>
+<a id="markov" class="anchor" href="#markov" aria-hidden="true"><span class="octicon octicon-link"></span></a>markov</h1>
+
+<p>Generate markov chains for chatbots and freestyle rap contests.</p>
+
+<h1>
+<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span class="octicon octicon-link"></span></a>examples</h1>
+
+<h2>
+<a id="qwantz" class="anchor" href="#qwantz" aria-hidden="true"><span class="octicon octicon-link"></span></a>qwantz</h2>
+
+<p>qwantz.js:</p>
+
+<p>var util = require('util');
+  var fs = require('fs');</p>
+
+<p>var Markov = require('markov');
+  var m = new Markov();</p>
+
+<p>var s = fs.readSync(__dirname + '/qwantz.txt');
+  m.train(s);</p>
+
+<p>var stdin = process.openStdin();
+  util.print('&gt; ');</p>
+
+<p>stdin.on('data', function (line) {
+    var res = m.respond(line.toString()).join(' ');
+    console.log(res);
+    util.print('&gt; ');
+  });</p>
+
+<p>output:</p>
+
+<p>$ node example/qwantz.js </p>
+
+<blockquote>
+<p>Hello friend.
+  Oh, that hurts me. How could fall apart, not unlike this tiny house. remains a danger when you? As I see him (quite often, Yes, As Thank I you? take have on! forgotten male, That oppression is is a A friend
+That is troubling news!
+  I've I had must to guard do against with such the a irony part of of their their fundamental fundamental injustices.
+Justice eh? SOMEBODY LIGHT UP THE BATSIGNAL
+  crazy I Utahraptor feel slipped alot in better! your about problems the put future! behind full You? of go My down perspective. The</p>
+</blockquote>
+
+<h2>
+<a id="methods" class="anchor" href="#methods" aria-hidden="true"><span class="octicon octicon-link"></span></a>methods</h2>
+
+<h3>
+<a id="new-markovminimumwords-casesensitive-strippunctuation" class="anchor" href="#new-markovminimumwords-casesensitive-strippunctuation" aria-hidden="true"><span class="octicon octicon-link"></span></a>new Markov(minimumWords, caseSensitive, stripPunctuation)</h3>
+
+<p>Create a new markov object. Optionally set <code>minimumWords</code> (default 1), <code>caseSensitive</code> (default false), <code>stripPunctuation</code> (default false).</p>
+
+<h3>
+<a id="traintext" class="anchor" href="#traintext" aria-hidden="true"><span class="octicon octicon-link"></span></a>.train(text)</h3>
+
+<p>Train the markov object with a string <code>text</code>, ignoring text with fewer than <code>minimumWords</code> words.</p>
+
+<h3>
+<a id="searchtext" class="anchor" href="#searchtext" aria-hidden="true"><span class="octicon octicon-link"></span></a>.search(text)</h3>
+
+<p>Search for and return some key found in the text body <code>text</code>.</p>
+
+<p>Return <code>undefined</code> if no matches were found.</p>
+
+<h3>
+<a id="pickwordnodes-words" class="anchor" href="#pickwordnodes-words" aria-hidden="true"><span class="octicon octicon-link"></span></a>.pickWord(nodes, words)</h3>
+
+<p>Choose a word at random from <code>nodes</code>, optionally favoring words in <code>words</code>.</p>
+
+<h3>
+<a id="nextkey" class="anchor" href="#nextkey" aria-hidden="true"><span class="octicon octicon-link"></span></a>.next(key)</h3>
+
+<p>Find a key likely to follow after <code>key</code>.</p>
+
+<p>Returns a hash with keys <code>key</code>, the canonical next key and <code>word</code>, a raw form of
+<code>key</code> as it appeared in the training text.</p>
+
+<h3>
+<a id="prevkey" class="anchor" href="#prevkey" aria-hidden="true"><span class="octicon octicon-link"></span></a>.prev(key)</h3>
+
+<p>Find a key likely to come before <code>key</code>.</p>
+
+<p>Returns a hash with keys <code>key</code>, the canonical next key and <code>word</code>, a raw form of
+<code>key</code> as it appeared in the training text.</p>
+
+<h3>
+<a id="fillkey-limit" class="anchor" href="#fillkey-limit" aria-hidden="true"><span class="octicon octicon-link"></span></a>.fill(key, limit)</h3>
+
+<p>Generate a markov chain in both directions starting at <code>key</code>. Return an array of
+the raw word forms along the way including the raw word form of the supplied
+<code>key</code>.</p>
+
+<p>Stop when the traversal hits a terminal entry or when limit words have been
+generated if limit is specified.</p>
+
+<h3>
+<a id="respondtext-limit" class="anchor" href="#respondtext-limit" aria-hidden="true"><span class="octicon octicon-link"></span></a>.respond(text, limit)</h3>
+
+<p>Search for a starting key in <code>text</code> and then call <code>.fill(key, limit)</code> on it.</p>
+
+<h2>
+<a id="tests" class="anchor" href="#tests" aria-hidden="true"><span class="octicon octicon-link"></span></a>tests</h2>
+
+<div class="highlight highlight-bash"><pre>npm <span class="nb">test</span>
+</pre></div>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="owner">
+      <p><a href="https://github.com/b3nj4m" class="avatar"><img src="https://avatars0.githubusercontent.com/u/104899?v=2&amp;s=60" width="48" height="48"></a> <a href="https://github.com/b3nj4m">b3nj4m</a> maintains <a href="https://github.com/b3nj4m/node-markov">Node-markov</a></p>
+
+
+      </div>
+      <div class="creds">
+        <small>This page generated using <a href="http://pages.github.com/">GitHub Pages</a><br>theme by <a href="https://twitter.com/jonrohan/">Jon Rohan</a></small>
+      </div>
+    </footer>
+  </div>
+  <div class="current-section">
+    <a href="#top">Scroll to top</a>
+    <a href="https://github.com/b3nj4m/node-markov/tarball/master" class="tar">tar</a><a href="https://github.com/b3nj4m/node-markov/zipball/master" class="zip">zip</a><a href="" class="code">source code</a>
+    <p class="name"></p>
+  </div>
+
+  
+</body>
+</html>
