@@ -47,38 +47,33 @@
 <h2>
 <a id="qwantz" class="anchor" href="#qwantz" aria-hidden="true"><span class="octicon octicon-link"></span></a>qwantz</h2>
 
-<p>qwantz.js:</p>
+<div class="highlight highlight-javascript"><pre>  <span class="kd">var</span> <span class="nx">util</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'util'</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'fs'</span><span class="p">);</span>
 
-<p>var util = require('util');
-  var fs = require('fs');</p>
+  <span class="kd">var</span> <span class="nx">Markov</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'markov'</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">m</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Markov</span><span class="p">();</span>
 
-<p>var Markov = require('markov');
-  var m = new Markov();</p>
+  <span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">readSync</span><span class="p">(</span><span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">'/qwantz.txt'</span><span class="p">);</span>
+  <span class="nx">m</span><span class="p">.</span><span class="nx">train</span><span class="p">(</span><span class="nx">s</span><span class="p">);</span>
 
-<p>var s = fs.readSync(__dirname + '/qwantz.txt');
-  m.train(s);</p>
+  <span class="kd">var</span> <span class="nx">stdin</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">openStdin</span><span class="p">();</span>
+  <span class="nx">util</span><span class="p">.</span><span class="nx">print</span><span class="p">(</span><span class="s1">'&gt; '</span><span class="p">);</span>
 
-<p>var stdin = process.openStdin();
-  util.print('&gt; ');</p>
+  <span class="nx">stdin</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'data'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">line</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">res</span> <span class="o">=</span> <span class="nx">m</span><span class="p">.</span><span class="nx">respond</span><span class="p">(</span><span class="nx">line</span><span class="p">.</span><span class="nx">toString</span><span class="p">()).</span><span class="nx">join</span><span class="p">(</span><span class="s1">' '</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">res</span><span class="p">);</span>
+    <span class="nx">util</span><span class="p">.</span><span class="nx">print</span><span class="p">(</span><span class="s1">'&gt; '</span><span class="p">);</span>
+  <span class="p">});</span>
+</pre></div>
 
-<p>stdin.on('data', function (line) {
-    var res = m.respond(line.toString()).join(' ');
-    console.log(res);
-    util.print('&gt; ');
-  });</p>
-
-<p>output:</p>
-
-<p>$ node example/qwantz.js </p>
-
-<blockquote>
-<p>Hello friend.
-  Oh, that hurts me. How could fall apart, not unlike this tiny house. remains a danger when you? As I see him (quite often, Yes, As Thank I you? take have on! forgotten male, That oppression is is a A friend
-That is troubling news!
-  I've I had must to guard do against with such the a irony part of of their their fundamental fundamental injustices.
-Justice eh? SOMEBODY LIGHT UP THE BATSIGNAL
-  crazy I Utahraptor feel slipped alot in better! your about problems the put future! behind full You? of go My down perspective. The</p>
-</blockquote>
+<div class="highlight highlight-bash"><pre>  <span class="nv">$ </span>node example/qwantz.js 
+  &gt; Hello friend.
+  Oh, that hurts me. How could fall apart, not unlike this tiny house. remains a danger when you? As I see him <span class="o">(</span>quite often, Yes, As Thank I you? take have on! forgotten male, That oppression is is a A friend
+  &gt; That is troubling news!
+  I<span class="err">'</span>ve I had must to guard <span class="k">do</span> against with such the a irony part of of their their fundamental fundamental injustices.
+  &gt; Justice eh? SOMEBODY LIGHT UP THE BATSIGNAL
+  crazy I Utahraptor feel slipped alot in better! your about problems the put future! behind full You? of go My down perspective. The
+</pre></div>
 
 <h2>
 <a id="methods" class="anchor" href="#methods" aria-hidden="true"><span class="octicon octicon-link"></span></a>methods</h2>
